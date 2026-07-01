@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Registration Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+      color: #333;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background: #007cba;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    button.prev {
+      background: #6c757d;
+    }
+    button.submit {
+      background: #28a745;
+    }
+    .error {
+      color: #dc3545;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .form-container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Alumni Registration Form</h1>
+
+    <form id="alumniForm">
+      <!-- Section 1: Personal Details -->
+      <div class="form-step active" id="step1">
+        <h2>Section 1: Personal Details</h2>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">First Name *</label>
+          <input type="text" id="firstName" name="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="middleName">Middle Name</label>
+          <input type="text" id="middleName" name="middleName">
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name *</label>
+          <input type="text" id="lastName" name="lastName" required>
+        </div>
+
+        <div class="form-group">
+          <label>Gender *</label>
+          <div class="radio-group">
+            <label><input type="radio" name="gender" value="Male" required> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+            <label><input type="radio" name="gender" value="Other"> Other</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Marital Status *</label>
+          <div class="radio-group">
+            <label><input type="radio" name="maritalStatus" value="Single" required> Single</label>
+            <label><input type="radio" name="maritalStatus" value="Married"> Married</label>
+            <label><input type="radio" name="maritalStatus" value="Divorced"> Divorced</label>
+            <label><input type="radio" name="maritalStatus" value="Widowed"> Widowed</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mobile">Mobile Number *</label>
+          <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="faculty">Faculty *</label>
+          <select id="faculty" name="faculty" required>
+            <option value="">-- Select Faculty --</option>
+            <option value="Arts">1) Arts</option>
+            <option value="Commerce">2) Commerce</option>
+            <option value="Science">3) Science</option>
+            <option value="CompScience">4) Comp Science, BBA, BBA(CA), BCA, MCA, M.Sc(CA)</option>
+            <option value="BVocMVoc">5) B.Voc / M.Voc</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="next" onclick="showStep(2)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 2: Arts Faculty -->
+      <div class="form-step" id="step2">
+        <h2>Section 2: Arts Faculty Details</h2>
+
+        <div class="form-group">
+          <label for="artsDegree">Degree *</label>
+          <select id="artsDegree" name="artsDegree">
+            <option value="">-- Select Degree --</option>
+            <option value="BA">BA</option>
+            <option value="MA">MA</option>
+            <option value="M.Phil">M.Phil</option>
+            <option value="Ph.D">Ph.D</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="artsSpecialization">Specialization *</label>
+          <select id="artsSpecialization" name="artsSpecialization">
+            <option value="">-- Select Specialization --</option>
+            <option value="Marathi">Marathi</option>
+            <option value="Hindi">Hindi</option>
+            <option value="English">English</option>
+            <option value="Political Science">Political Science</option>
+            <option value="Economics">Economics</option>
+            <option value="Geography">Geography</option>
+            <option value="Psychology">Psychology</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(1)">Previous</button>
+          <button type="button" class="next" onclick="showStep(7)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 3: Commerce Faculty -->
+      <div class="form-step" id="step3">
+        <h2>Section 3: Commerce Faculty Details</h2>
+
+        <div class="form-group">
+          <label for="commerceDegree">Degree *</label>
+          <select id="commerceDegree" name="commerceDegree">
+            <option value="">-- Select Degree --</option>
+            <option value="B.Com">B.Com</option>
+            <option value="M.Com">M.Com</option>
+            <option value="M.Phil">M.Phil</option>
+            <option value="Ph.D">Ph.D</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(1)">Previous</button>
+          <button type="button" class="next" onclick="showStep(7)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 4: Science Faculty -->
+      <div class="form-step" id="step4">
+        <h2>Section 4: Science Faculty Details</h2>
+
+        <div class="form-group">
+          <label for="scienceDegree">Degree *</label>
+          <select id="scienceDegree" name="scienceDegree">
+            <option value="">-- Select Degree --</option>
+            <option value="B.Sc">B.Sc</option>
+            <option value="M.Sc">M.Sc</option>
+            <option value="M.Phil">M.Phil</option>
+            <option value="Ph.D">Ph.D</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="scienceSpecialization">Specialization *</label>
+          <select id="scienceSpecialization" name="scienceSpecialization">
+            <option value="">-- Select Specialization --</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Botany">Botany</option>
+            <option value="Zoology">Zoology</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Statistics">Statistics</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(1)">Previous</button>
+          <button type="button" class="next" onclick="showStep(7)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 5: Comp Science / BBA / BCA / MCA etc. -->
+      <div class="form-step" id="step5">
+        <h2>Section 5: Comp Science / BBA / BCA / MCA Details</h2>
+
+        <div class="form-group">
+          <label for="compDegree">Degree *</label>
+          <select id="compDegree" name="compDegree">
+            <option value="">-- Select Degree --</option>
+            <option value="B.Sc (CS)">B.Sc (CS)</option>
+            <option value="M.Sc (CS)">M.Sc (CS)</option>
+            <option value="M.Sc(CA)">M.Sc(CA)</option>
+            <option value="BBA">BBA</option>
+            <option value="BBA(CA)">BBA(CA)</option>
+            <option value="BCA">BCA</option>
+            <option value="MCA">MCA</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(1)">Previous</button>
+          <button type="button" class="next" onclick="showStep(7)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 6: B.Voc / M.Voc -->
+      <div class="form-step" id="step6">
+        <h2>Section 6: B.Voc / M.Voc Details</h2>
+
+        <div class="form-group">
+          <label for="bvocDegree">Degree *</label>
+          <select id="bvocDegree" name="bvocDegree">
+            <option value="">-- Select Degree --</option>
+            <option value="B.Voc(Software Development)">B.Voc(Software Development)</option>
+            <option value="M.Voc(Software Development)">M.Voc(Software Development)</option>
+            <option value="B.Voc(Food Science and Technology)">B.Voc(Food Science and Technology)</option>
+            <option value="B.Voc(Interior Design)">B.Voc(Interior Design)</option>
+            <option value="B.Voc(Automotive Electronics)">B.Voc(Automotive Electronics)</option>
+          </select>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(1)">Previous</button>
+          <button type="button" class="next" onclick="showStep(7)">Next</button>
+        </div>
+      </div>
+
+      <!-- Section 7: Common Final Section -->
+      <div class="form-step" id="step7">
+        <h2>Section 7: Additional Details</h2>
+
+        <div class="form-group">
+          <label for="yearOfPassing">Year of Passing *</label>
+          <select id="yearOfPassing" name="yearOfPassing" required>
+            <option value="">-- Select Year --</option>
+            <!-- Years from 1995 to 2026 -->
+            <script>
+              for (let year = 2026; year >= 1995; year--) {
+                document.write(`<option value="${year}">${year}</option>`);
+              }
+            </script>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="achievements">
+            Please mention if any special achievement / award that you received or any remarkable participation or contribution in the college activities and when you were a student in this college.<br>
+            तुम्ही या महाविद्यालयात विद्यार्थी असताना तुम्ही केलेल्या उत्कृष्ट कामगिरीबद्दल, किंवा महाविद्यालयीन उपक्रमांमध्ये उल्लेखनीय सहभाग किंवा योगदान असेल तर तसेच काही विशेष पारितोषिके, पुरस्कार मिळाले असल्यास कृपया नमूद करा
+          </label>
+          <textarea id="achievements" name="achievements" placeholder="Enter details here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="currentOccupation">
+            Current Occupation / सध्याचा व्यवसाय *
+          </label>
+          <input type="text" id="currentOccupation" name="currentOccupation" required>
+        </div>
+
+        <div class="form-group">
+          <label>
+            In which college activity you want to associate? Please mention.<br>
+            कॉलेजच्या कोणत्या ऍक्टिव्हिटी मध्ये आपणास सहभागी होण्यास आवडेल. कृपया त्याचा उल्लेख करावा. *
+          </label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="activities" value="NSS activities"> NSS activities</label>
+            <label><input type="checkbox" name="activities" value="NCC activities"> NCC activities</label>
+            <label><input type="checkbox" name="activities" value="Guest lecture organization"> Guest lecture organization</label>
+            <label><input type="checkbox" name="activities" value="Sports activities"> Sports activities</label>
+            <label><input type="checkbox" name="activities" value="Book Donation"> Book Donation</label>
+            <label><input type="checkbox" name="activities" value="Donation to your dept in form of books, trophies, lab instrument"> Donation to your dept in form of books, trophies, lab instrument</label>
+            <label><input type="checkbox" name="activities" value="Cultural activities"> Cultural activities</label>
+            <label><input type="checkbox" name="activities" value="Other than all the above"> Other than all the above</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="receipt">
+            Alumni registration fees Rs. 100 or any donation paid online, upload Transaction receipt.<br>
+            (Max 1 file, Max size 1 MB)
+          </label>
+          <input type="file" id="receipt" name="receipt" accept=".jpg,.jpeg,.png,.pdf" required>
+        </div>
+
+        <div class="form-navigation">
+          <button type="button" class="prev" onclick="showStep(getPreviousStep())">Previous</button>
+          <button type="submit" class="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="successMessage" class="hidden">
+      <h2 style="color: #28a745;">Form Submitted Successfully!</h2>
+      <p>Thank you for registering as an alumni.</p>
+    </div>
+
+    <div id="errorMessage" class="hidden">
+      <h2 style="color: #dc3545;">Submission Failed</h2>
+      <p>Please try again later or contact support.</p>
+    </div>
+  </div>
+
+  <script>
+    // Step management
+    let currentStep = 1;
+    const facultyStepMap = {
+      "Arts": 2,
+      "Commerce": 3,
+      "Science": 4,
+      "CompScience": 5,
+      "BVocMVoc": 6
+    };
+
+    function showStep(step) {
+      // Hide all steps
+      document.querySelectorAll('.form-step').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Show target step
+      document.getElementById(`step${step}`).classList.add('active');
+      currentStep = step;
+    }
+
+    function getPreviousStep() {
+      const faculty = document.getElementById('faculty').value;
+      if (currentStep === 7) {
+        return facultyStepMap[faculty] || 1;
+      }
+      return 1;
+    }
+
+    // Faculty change handler
+    document.getElementById('faculty').addEventListener('change', function() {
+      const faculty = this.value;
+      if (faculty && facultyStepMap[faculty]) {
+        showStep(facultyStepMap[faculty]);
+      }
+    });
+
+    // Form submission
+    document.getElementById('alumniForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const activities = Array.from(document.querySelectorAll('input[name="activities"]:checked'))
+        .map(cb => cb.value)
+        .join(', ');
+      formData.set('activities', activities);
+
+      // Add faculty-specific degree/specialization based on selected faculty
+      const faculty = document.getElementById('faculty').value;
+      if (faculty === 'Arts') {
+        formData.set('degree', document.getElementById('artsDegree').value);
+        formData.set('specialization', document.getElementById('artsSpecialization').value);
+      } else if (faculty === 'Commerce') {
+        formData.set('degree', document.getElementById('commerceDegree').value);
+      } else if (faculty === 'Science') {
+        formData.set('degree', document.getElementById('scienceDegree').value);
+        formData.set('specialization', document.getElementById('scienceSpecialization').value);
+      } else if (faculty === 'CompScience') {
+        formData.set('degree', document.getElementById('compDegree').value);
+      } else if (faculty === 'BVocMVoc') {
+        formData.set('degree', document.getElementById('bvocDegree').value);
+      }
+
+      // Replace with your Google Apps Script Web App URL
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzNPbxHtPthO2uT_sG-mtLjBTm7Z3ZkSjeXDQ2nd05j3KIl0W2UjKhvtfnBmYCi5V5BhA/exec';
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          document.getElementById('alumniForm').classList.add('hidden');
+          document.getElementById('successMessage').classList.remove('hidden');
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('errorMessage').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
