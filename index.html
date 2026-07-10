@@ -432,52 +432,108 @@
       }
     });
 
-    // Form submission
-    document.getElementById('alumniForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+   // Form submission
+document.getElementById('alumniForm').addEventListener('submit', async function(e) {
 
-      const formData = new FormData(this);
-      const activities = Array.from(document.querySelectorAll('input[name="activities"]:checked'))
-        .map(cb => cb.value)
-        .join(', ');
-      formData.set('activities', activities);
+    e.preventDefault();
 
-      // Add faculty-specific degree/specialization based on selected faculty
-      const faculty = document.getElementById('faculty').value;
-      if (faculty === 'Arts') {
+    const formData = new FormData(this);
+
+    // Activities
+    const activities = Array.from(
+        document.querySelectorAll('input[name="activities"]:checked')
+    ).map(cb => cb.value).join(', ');
+
+    formData.set('activities', activities);
+
+    // Faculty
+    const faculty = document.getElementById('faculty').value;
+
+    if (faculty === 'Arts') {
         formData.set('degree', document.getElementById('artsDegree').value);
         formData.set('specialization', document.getElementById('artsSpecialization').value);
-      } else if (faculty === 'Commerce') {
+    }
+
+    if (faculty === 'Commerce') {
         formData.set('degree', document.getElementById('commerceDegree').value);
-      } else if (faculty === 'Science') {
+    }
+
+    if (faculty === 'Science') {
         formData.set('degree', document.getElementById('scienceDegree').value);
         formData.set('specialization', document.getElementById('scienceSpecialization').value);
-      } else if (faculty === 'CompScience') {
+    }
+
+    if (faculty === 'CompScience') {
         formData.set('degree', document.getElementById('compDegree').value);
-      } else if (faculty === 'BVocMVoc') {
+    }
+
+    if (faculty === 'BVocMVoc') {
         formData.set('degree', document.getElementById('bvocDegree').value);
-      }
+    }
 
-      // Replace with your Google Apps Script Web App URL
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbx9aCNsWWB_VNICfBwUbSRGzGUiWEQsMmKSSC87P159U6sHuc0UCdN9iUEqJ7b7Nr0IjA/exec';
+    // ===== Receipt =====
 
-      try {
-        const response = await fetch(scriptURL, {
-          method: 'POST',
-          body: formData
+    const file = document.getElementById("receipt").files[0];
+
+    if(file){
+
+        const reader = new FileReader();
+
+        reader.onload = async function(){
+
+            const base64 = reader.result.split(",")[1];
+
+            formData.append("receiptName", file.name);
+            formData.append("receiptType", file.type);
+            formData.append("receiptData", base64);
+
+            submitForm(formData);
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }else{
+
+        submitForm(formData);
+
+    }
+
+});
+
+async function submitForm(formData){
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx9aCNsWWB_VNICfBwUbSRGzGUiWEQsMmKSSC87P159U6sHuc0UCdN9iUEqJ7b7Nr0IjA/exec";
+
+    try{
+
+        const response = await fetch(scriptURL,{
+            method:"POST",
+            body:formData
         });
 
-        if (response.ok) {
-          document.getElementById('alumniForm').classList.add('hidden');
-          document.getElementById('successMessage').classList.remove('hidden');
-        } else {
-          throw new Error('Network response was not ok.');
+        const result = await response.json();
+
+        if(result.result=="success"){
+
+            document.getElementById("alumniForm").classList.add("hidden");
+            document.getElementById("successMessage").classList.remove("hidden");
+
+        }else{
+
+            alert(result.message);
+
         }
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('errorMessage').classList.remove('hidden');
-      }
-    });
+
+    }catch(err){
+
+        console.log(err);
+
+        document.getElementById("errorMessage").classList.remove("hidden");
+
+    }
+
+}
   </script>
 </body>
 </html>
